@@ -1,120 +1,42 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-public class BookMyStayApp
-    /*
-    @author Developer
-    @version 1.0
-    */
-{
-    public static void main(String[] args){
-        System.out.println("Welcome to the Hotel Booking Management System");
-        System.out.println("System Initialized Successfully.");
+/*class RoomSearchService {
 
-        //UC2
-        /*
-        System.out.println("Hotel Room Initialization\n");
+    public void searchAvailableRooms(
+            RoomInventory inventory,
+            Room singleRoom,
+            Room doubleRoom,
+            Room suiteRoom) {
 
-        int singleAvailable = 5;
-        int doubleAvailable = 3;
-        int suiteAvailable = 2;
+        Map<String, Integer> availability = inventory.getRoomAvailability();
 
-        Room single = new SingleRoom();
-        Room doubleRoom = new DoubleRoom();
-        Room suite = new SuiteRoom();
+        System.out.println("Room Search\n");
 
 
-        System.out.println("Single Room:");
-        single.displayRoomDetails();
-        System.out.println("Available: " + singleAvailable);
-        System.out.println();
-
-        System.out.println("Double Room:");
-        doubleRoom.displayRoomDetails();
-        System.out.println("Available: " + doubleAvailable);
-        System.out.println();
-
-        System.out.println("Suite Room:");
-        suite.displayRoomDetails();
-        System.out.println("Available: " + suiteAvailable);
-
-         */
-        //UC3
-        System.out.println("Hotel Room Inventory Status\n");
-
-        Room single = new SingleRoom();
-        Room doubleRoom = new DoubleRoom();
-        Room suite = new SuiteRoom();
-
-        RoomInventory inventory = new RoomInventory();
-
-        System.out.println("Single Rooms:");
-        single.displayRoomDetails();
-        System.out.println("Available Rooms: " + inventory.getRoomAvailability().get("Single Room"));
-        System.out.println();
-
-        System.out.println("Double Room:");
-        doubleRoom.displayRoomDetails();
-        System.out.println("Available Rooms: " + inventory.getRoomAvailability().get("Double Room"));
-        System.out.println();
-
-        System.out.println("Suite Room:");
-        suite.displayRoomDetails();
-        System.out.println("Available Rooms: " + inventory.getRoomAvailability().get("Suite Room"));
-
-    }
-}
-/*
-abstract class Room {
+        if (availability.get("Single Room") > 0) {
+            System.out.println("Single Room:");
+            singleRoom.displayRoomDetails();
+            System.out.println("Available: " + availability.get("Single Room"));
+            System.out.println();
+        }
 
 
-    protected int numberOfBeds;
+        if (availability.get("Double Room") > 0) {
+            System.out.println("Double Room:");
+            doubleRoom.displayRoomDetails();
+            System.out.println("Available: " + availability.get("Double Room"));
+            System.out.println();
+        }
 
 
-    protected int squareFeet;
-
-    protected double pricePerNight;
-
-
-    public Room(int numberOfBeds, int squareFeet, double pricePerNight) {
-        this.numberOfBeds = numberOfBeds;
-        this.squareFeet = squareFeet;
-        this.pricePerNight = pricePerNight;
-    }
-
-
-    public void displayRoomDetails() {
-        System.out.println("Beds: " + numberOfBeds);
-        System.out.println("Size: " + squareFeet + " sqft");
-        System.out.println("Price per night: " + pricePerNight);
+        if (availability.get("Suite Room") > 0) {
+            System.out.println("Suite Room:");
+            suiteRoom.displayRoomDetails();
+            System.out.println("Available: " + availability.get("Suite Room"));
+        }
     }
 }
 
-
-
-
-class SingleRoom extends Room {
-
-    public SingleRoom() {
-        super(1, 250, 1500.0);
-    }
-}
-
-class DoubleRoom extends Room {
-
-    public DoubleRoom() {
-        super(2, 400, 2500.0);
-    }
-}
-
-class SuiteRoom extends Room {
-
-    public SuiteRoom() {
-        super(3, 750, 5000.0);
-    }
-}
-
- */
 abstract class Room {
 
     protected int numberOfBeds;
@@ -151,6 +73,7 @@ class SuiteRoom extends Room {
         super(3, 750, 5000.0);
     }
 }
+
 
 class RoomInventory {
 
@@ -168,10 +91,102 @@ class RoomInventory {
     }
 
     public Map<String, Integer> getRoomAvailability() {
-        return roomAvailability;
+        return roomAvailability; // read-only usage expected
     }
 
     public void updateAvailability(String roomType, int count) {
         roomAvailability.put(roomType, count);
+    }
+} */
+
+class Reservation {
+
+    private String guestName;
+    private String roomType;
+
+    public Reservation(String guestName, String roomType) {
+        this.guestName = guestName;
+        this.roomType = roomType;
+    }
+
+    public String getGuestName() {
+        return guestName;
+    }
+
+    public String getRoomType() {
+        return roomType;
+    }
+}
+
+class BookingRequestQueue {
+
+    private Queue<Reservation> requestQueue;
+
+    public BookingRequestQueue() {
+        requestQueue = new LinkedList<>();
+    }
+
+    public void addRequest(Reservation reservation) {
+        requestQueue.offer(reservation);
+    }
+
+    public Reservation getNextRequest() {
+        return requestQueue.poll();
+    }
+
+    public boolean hasPendingRequests() {
+        return !requestQueue.isEmpty();
+    }
+}
+
+public class BookMyStayApp
+    /*
+    @author Developer
+    @version 1.0
+    */
+{
+    public static void main(String[] args){
+        System.out.println("Welcome to the Hotel Booking Management System");
+        System.out.println("System Initialized Successfully.");
+
+        /*Room single = new SingleRoom();
+        Room doubleRoom = new DoubleRoom();
+        Room suite = new SuiteRoom();
+
+
+        RoomInventory inventory = new RoomInventory();
+
+
+        RoomSearchService searchService = new RoomSearchService();
+
+
+        searchService.searchAvailableRooms(
+                inventory,
+                single,
+                doubleRoom,
+                suite
+        );
+        */
+
+        System.out.println("Booking Request Queue\n");
+
+        BookingRequestQueue bookingQueue = new BookingRequestQueue();
+
+        Reservation r1 = new Reservation("Abhi", "Single");
+        Reservation r2 = new Reservation("Subha", "Double");
+        Reservation r3 = new Reservation("Vanmathii", "Suite");
+
+        bookingQueue.addRequest(r1);
+        bookingQueue.addRequest(r2);
+        bookingQueue.addRequest(r3);
+
+        while (bookingQueue.hasPendingRequests()) {
+            Reservation r = bookingQueue.getNextRequest();
+
+            System.out.println("Processing booking for Guest: "
+                    + r.getGuestName()
+                    + ", Room Type: "
+                    + r.getRoomType());
+        }
     }
 }
